@@ -34,17 +34,17 @@ const OFFICE_BG_URL = "https://youke.xn--y7xa690gmna.cn/s1/2026/02/15/69913188a0
 
 // --- 1. 数据定义 ---
 const BOSS_SKILLS = [
-  { id: "b1", name: "下班·封印术", nickname: "17:59分的发起人", desc: "17:59 发起会议，锁定下班按钮", attackText: "简单开个会，所有人进会议室！", satisfiedText: "既然你还有紧急交付，那这次会你先不用参加了，看纪要吧。", icon: PhoneCall },
+  { id: "b1", name: "下班·封印术", nickname: "17:59分的发起人", desc: "17:59 发起会议，锁定下班按钮", attackText: "快下班了，`简单`开个会，所有人进会议室！", satisfiedText: "既然你还有紧急交付，那这次会你先不用参加了，看纪要吧。", icon: PhoneCall },
   { id: "b2", name: "微操·周报催命", nickname: "对齐颗粒度的王总", desc: "要求精确到分钟的日报，体力减半", attackText: "这周产出不够饱和啊，发个周报看看？", satisfiedText: "这个总结非常有深度，看到你对底层架构的思考了，不错。", icon: FileText },
   { id: "b3", name: "零点·PPT降临", nickname: "画饼非遗继承人", desc: "明早就要方案，施加【通宵】Debuff", attackText: "明天一早我要看到方案 PPT！", satisfiedText: "效率很高！方案逻辑很清晰，早点休息，明天汇报用这个。", icon: Presentation },
-  { id: "b4", name: "降维·文字过敏", nickname: "闭环守门大魔王", desc: "拒绝阅读文字，强制要求商业架构图", attackText: "字太多不看，给我画个商业架构图！", satisfiedText: "这就是我要的视觉化表达！一目了然，以后都按这个标准出图。", icon: Network }
+  { id: "b4", name: "降维·文字过敏", nickname: "闭环守门大魔王", desc: "拒绝阅读文字，强制要求商业架构图", attackText: "字太多我不爱看！给我画个商业架构图！", satisfiedText: "这就是我要的视觉化表达！一目了然，以后都按这个标准出图。", icon: Network }
 ];
 
 const ALL_EMP_SKILLS = [
   { 
     id: "e1", name: "AI 嘴替·礼貌回绝", nickname: "反卷链路突围者", desc: "LLM 生成高情商废话", icon: Smile, 
     brand: "DeepSeek", brandColor: "#007AFF", brandIcon: MessageCircle, 
-    techTitle: "DeepSeek-V3 深度思考中...", 
+    techTitle: "DeepSeek 教你怎么委婉拒绝中...", 
     castSteps: ["分析老板语气情绪...", "匹配‘委婉拒绝’大模型...", "正在构建高情商拒接话术...", "生成最终回复内容..."],
     actionBtn: "发送回复", resultType: "text", resultContent: "收到。但我手头有一个紧急需求必须在今晚交付，可能无法参加。我会看纪要，有需要我配合的随时同步。", link: "https://chatgpt.com/" 
   },
@@ -58,14 +58,14 @@ const ALL_EMP_SKILLS = [
   { 
     id: "e3", name: "Gamma·光速PPT", nickname: "AI咒语·摸鱼仙人", desc: "Gamma 一键生成 PPT", icon: Zap, 
     brand: "Gamma", brandColor: "#6C47FF", brandIcon: Layout, 
-    techTitle: "Gamma AI Designer", 
+    techTitle: "Gamma 一键生成PPT", 
     castSteps: ["解析大纲: 数字化转型方案", "生成第 1 页: 封面与概览", "生成第 2 页: 现状深度分析", "生成第 3 页: 核心解决方案", "生成第 4 页: 商业模式闭环", "生成第 5 页: 落地路线图", "生成第 6 页: 预期收益展望", "最后排版校验，准备交付！"],
     actionBtn: "交付 PPT", resultType: "file", resultTitle: "Q4_商业计划书_vFinal.ppt", resultDesc: "页数: 15P | 主题: 科技蓝 | 生成耗时: 30s", link: "https://gamma.app/" 
   },
   { 
     id: "e4", name: "Napkin·画饼具象化", nickname: "带薪如厕国家队", desc: "文字转架构图", icon: Briefcase, 
     brand: "Napkin", brandColor: "#FF6B00", brandIcon: MousePointer2, 
-    techTitle: "Napkin.ai Canvas", 
+    techTitle: "Napkin 自动绘制架构图", 
     castSteps: ["提取文本逻辑节点...", "建立核心业务链路...", "识别层级映射关系...", "渲染 SVG 矢量图形...", "线条边缘平滑优化...", "导出透明架构图..."],
     actionBtn: "导出架构图", resultType: "image", resultTitle: "业务逻辑架构图.svg", resultDesc: "矢量高清 | 包含: 流程图/层级图/鱼骨图", link: "https://napkin.ai/" 
   }
@@ -360,9 +360,12 @@ function BattleScene({ bossSkill, empSkill, onBack }) {
               </div>
 
               <div className="bg-slate-950 p-6 md:p-8 min-h-[420px] flex flex-col relative">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="text-[10px] uppercase font-black tracking-[0.2em]" style={{ color: empSkill.brandColor }}>Process: {empSkill.techTitle}</div>
-                  <div className="text-[10px] font-mono text-slate-500">{castStepIndex + 1} / {empSkill.castSteps.length}</div>
+                <div className="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                  <div>
+                    <div className="text-[10px] uppercase font-bold text-slate-500 tracking-widest mb-1">Running Process</div>
+                    <div className="text-3xl font-black tracking-wide" style={{ color: empSkill.brandColor, textShadow: `0 0 20px ${empSkill.brandColor}40` }}>{empSkill.techTitle}</div>
+                  </div>
+                  <div className="text-xl font-mono font-bold text-slate-600 bg-slate-900 px-4 py-2 rounded-lg border border-white/5">{castStepIndex + 1} <span className="text-slate-700 text-sm">/ {empSkill.castSteps.length}</span></div>
                 </div>
 
                 <div className="flex-1 flex items-center justify-center overflow-hidden mb-6">
@@ -446,7 +449,7 @@ function SelectCard({ role, title, skills, selectedIds, onToggle, theme, isLocke
               <div className={`p-3 rounded-xl ${selectedIds.includes(s.id) ? 'bg-white/10' : 'bg-black/20'}`}><s.icon size={28} /></div>
               <div className="flex-1 text-left">
                 <div className="font-black text-lg leading-tight">{s.name}</div>
-                {s.desc && <div className="text-[10px] opacity-50 leading-snug mt-1 italic">{s.desc}</div>}
+                {s.desc && <div className="text-sm opacity-80 leading-snug mt-1.5 font-medium">{s.desc}</div>}
               </div>
               {selectedIds.includes(s.id) && <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className={`w-3 h-3 rounded-full ${theme === 'red' ? 'bg-red-500' : 'bg-blue-500'}`} />}
             </div>
