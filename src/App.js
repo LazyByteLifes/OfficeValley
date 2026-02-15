@@ -6,7 +6,6 @@ import {
   Zap,
   Smile,
   FileText,
-  Ghost,
   ArrowLeft,
   Swords,
   Play,
@@ -19,24 +18,27 @@ import {
   Loader2,
   Send,
   CheckCircle2,
-  XCircle,
   FileBadge,
-  Image as ImageIcon,
   MessageCircle,
   Trophy,
   ExternalLink,
   Info,
+  Sparkles,
+  Layout,
+  MousePointer2,
+  Check,
 } from "lucide-react";
 
 // --- 常量数据 ---
 const OFFICE_BG_URL =
   "https://youke.xn--y7xa690gmna.cn/s1/2026/02/15/69913188a0f1e.webp";
 
-// --- 1. 老板技能 (已找回 desc 字段) ---
+// --- 1. 数据定义 ---
 const BOSS_SKILLS = [
   {
     id: "b1",
     name: "下班·封印术",
+    nickname: "17:59分的发起人",
     desc: "17:59 发起会议，锁定下班按钮",
     attackText: "简单开个会，所有人进会议室！",
     satisfiedText: "既然你还有紧急交付，那这次会你先不用参加了，看纪要吧。",
@@ -45,6 +47,7 @@ const BOSS_SKILLS = [
   {
     id: "b2",
     name: "微操·周报催命",
+    nickname: "对齐颗粒度的王总",
     desc: "要求精确到分钟的日报，体力减半",
     attackText: "这周产出不够饱和啊，发个周报看看？",
     satisfiedText: "这个总结非常有深度，看到你对底层架构的思考了，不错。",
@@ -53,6 +56,7 @@ const BOSS_SKILLS = [
   {
     id: "b3",
     name: "零点·PPT降临",
+    nickname: "画饼非遗继承人",
     desc: "明早就要方案，施加【通宵】Debuff",
     attackText: "明天一早我要看到方案 PPT！",
     satisfiedText: "效率很高！方案逻辑很清晰，早点休息，明天汇报用这个。",
@@ -61,6 +65,7 @@ const BOSS_SKILLS = [
   {
     id: "b4",
     name: "降维·文字过敏",
+    nickname: "闭环守门大魔王",
     desc: "拒绝阅读文字，强制要求商业架构图",
     attackText: "字太多不看，给我画个商业架构图！",
     satisfiedText: "这就是我要的视觉化表达！一目了然，以后都按这个标准出图。",
@@ -68,51 +73,71 @@ const BOSS_SKILLS = [
   },
 ];
 
-// --- 2. 员工技能 ---
 const ALL_EMP_SKILLS = [
   {
     id: "e1",
     name: "AI 嘴替·礼貌回绝",
-    desc: "LLM 生成高情商废话，无伤格挡",
+    nickname: "反卷链路突围者",
+    desc: "LLM 生成高情商废话",
     icon: Smile,
-    color: "text-green-400",
-    techTitle: "DeepSeek / 通义千问",
-    techStep: "复制提示词 -> 粘贴 -> 发送",
-    magicSpell:
-      "“请帮我用委婉、高情商的语气拒绝这个会议，理由是手头有紧急客户需求...”",
+    brand: "DeepSeek",
+    brandColor: "#007AFF",
+    brandIcon: MessageCircle,
+    techTitle: "DeepSeek-V3 深度思考中...",
+    castSteps: [
+      "分析老板语气情绪...",
+      "匹配‘委婉拒绝’大模型...",
+      "正在构建高情商拒接话术...",
+      "生成最终回复内容...",
+    ],
     actionBtn: "发送回复",
     resultType: "text",
     resultContent:
-      "收到。但我手头有一个紧急客户需求必须在今晚交付，可能无法参加会议。我会看会议纪要，有需要我配合的随时同步。",
+      "收到。但我手头有一个紧急需求必须在今晚交付，可能无法参加。我会看纪要，有需要我配合的随时同步。",
     link: "https://chatgpt.com/",
   },
   {
     id: "e2",
     name: "黑话·周报膨胀术",
+    nickname: "底层逻辑架构师(自封)",
     desc: "把 1 个 Bug 吹成底层重构",
     icon: Cpu,
-    color: "text-blue-400",
-    techTitle: "Kimi 智能助手",
-    techStep: "投喂日报 -> 要求扩写 -> 增加黑话",
-    magicSpell:
-      "“将这段日报扩写成 500 字，包含‘底层逻辑’、‘颗粒度’、‘赋能’等词汇...”",
-    actionBtn: "一键扩写",
+    brand: "Kimi",
+    brandColor: "#00E266",
+    brandIcon: Sparkles,
+    techTitle: "Kimi.ai 智能扩写",
+    castSteps: [
+      "扫描原始日报文本...",
+      "提取核心交付物...",
+      "注入‘底层逻辑’等大厂黑话...",
+      "生成深度工作复盘...",
+    ],
+    actionBtn: "生成周报",
     resultType: "file",
     resultTitle: "本周工作复盘.docx",
-    resultDesc: "字数: 3,420 | 查重率: 0% | 黑话浓度: 高",
+    resultDesc: "字数: 3,420 | 查重率: 0% | 黑话浓度: 极高",
     link: "https://kimi.moonshot.cn/",
   },
   {
     id: "e3",
     name: "Gamma·光速PPT",
-    desc: "Gamma 一键生成，瞬秒 Deadline",
+    nickname: "AI咒语·摸鱼仙人",
+    desc: "Gamma 一键生成 PPT",
     icon: Zap,
-    color: "text-purple-400",
-    techTitle: "Gamma.app",
-    techStep: "输入大纲 -> 选择主题 -> AI 生成",
-    magicSpell:
-      "正在连接 Gamma... 生成大纲... 自动配图... 排版优化... 10页 PPT 生成完毕！",
-    actionBtn: "生成 PPT",
+    brand: "Gamma",
+    brandColor: "#6C47FF",
+    brandIcon: Layout,
+    techTitle: "Gamma AI Designer",
+    castSteps: [
+      "解析大纲: 数字化转型方案",
+      "生成第 1-2 页: 封面与概览",
+      "生成第 3-4 页: 现状分析",
+      "生成第 5-6 页: 核心方案",
+      "生成第 7-8 页: 落地路线",
+      "匹配 AI 高保真视觉图层...",
+      "最后排版校验，准备交付！",
+    ],
+    actionBtn: "交付 PPT",
     resultType: "file",
     resultTitle: "Q4_商业计划书_vFinal.ppt",
     resultDesc: "页数: 15P | 主题: 科技蓝 | 生成耗时: 30s",
@@ -121,13 +146,22 @@ const ALL_EMP_SKILLS = [
   {
     id: "e4",
     name: "Napkin·画饼具象化",
-    desc: "文字转架构图，克制【文字过敏】",
+    nickname: "带薪如厕国家队",
+    desc: "文字转架构图",
     icon: Briefcase,
-    color: "text-orange-400",
-    techTitle: "Napkin.ai",
-    techStep: "粘贴文档 -> AI 识别逻辑 -> 生成图表",
-    magicSpell: "分析文本逻辑... 匹配图表模型... 生成矢量架构图... 导出 SVG！",
-    actionBtn: "导出图表",
+    brand: "Napkin",
+    brandColor: "#FF6B00",
+    brandIcon: MousePointer2,
+    techTitle: "Napkin.ai Canvas",
+    castSteps: [
+      "提取文本逻辑节点...",
+      "建立核心业务链路...",
+      "识别层级映射关系...",
+      "渲染 SVG 矢量图形...",
+      "线条边缘平滑优化...",
+      "导出透明架构图...",
+    ],
+    actionBtn: "导出架构图",
     resultType: "image",
     resultTitle: "业务逻辑架构图.svg",
     resultDesc: "矢量高清 | 包含: 流程图/层级图/鱼骨图",
@@ -135,50 +169,57 @@ const ALL_EMP_SKILLS = [
   },
 ];
 
-const SKILL_LINKAGE = {
-  b1: ["e1"],
-  b2: ["e2"],
-  b3: ["e3"],
-  b4: ["e4"],
-};
+const SKILL_LINKAGE = { b1: ["e1"], b2: ["e2"], b3: ["e3"], b4: ["e4"] };
+
+// --- 2. 打字机组件 ---
+function Typewriter({ text, speed = 30, delay = 0, className = "" }) {
+  const [displayedText, setDisplayedText] = useState("");
+  useEffect(() => {
+    setDisplayedText("");
+    const timeout = setTimeout(() => {
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < text.length) {
+          setDisplayedText(text.substring(0, i + 1));
+          i++;
+        } else {
+          clearInterval(interval);
+        }
+      }, speed);
+      return () => clearInterval(interval);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [text, speed, delay]);
+
+  return <span className={className}>{displayedText}</span>;
+}
 
 export default function App() {
   const [scene, setScene] = useState("start");
   const [selected, setSelected] = useState({ boss: [], emp: [] });
-
   const availableEmpSkills = useMemo(() => {
     const bossId = selected.boss[0];
-    if (!bossId) return [];
-    return ALL_EMP_SKILLS.filter((skill) =>
-      SKILL_LINKAGE[bossId].includes(skill.id)
-    );
+    return bossId
+      ? ALL_EMP_SKILLS.filter((s) => SKILL_LINKAGE[bossId].includes(s.id))
+      : [];
   }, [selected.boss]);
 
   const toggleSkill = (role, id) => {
     setSelected((prev) => {
-      const isAlreadySelected = prev[role].includes(id);
-      if (role === "boss") {
-        return { ...prev, boss: isAlreadySelected ? [] : [id], emp: [] };
-      } else {
-        return { ...prev, emp: isAlreadySelected ? [] : [id] };
-      }
+      const isSet = prev[role].includes(id);
+      if (role === "boss") return { boss: isSet ? [] : [id], emp: [] };
+      return { ...prev, emp: isSet ? [] : [id] };
     });
   };
 
-  const isReady = selected.boss.length === 1 && selected.emp.length === 1;
-  const currentBossSkill = BOSS_SKILLS.find((s) => s.id === selected.boss[0]);
-  const currentEmpSkill = ALL_EMP_SKILLS.find((s) => s.id === selected.emp[0]);
-
   return (
     <div className="h-screen w-screen overflow-hidden relative bg-black text-white font-sans selection:bg-yellow-500 selection:text-black">
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-40 transition-opacity duration-1000"
-          style={{ backgroundImage: `url(${OFFICE_BG_URL})` }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/90" />
-        <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(255,255,255,0.03)_50%)] bg-[length:100%_4px] opacity-30 animate-scan" />
-      </div>
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center opacity-40"
+        style={{ backgroundImage: `url(${OFFICE_BG_URL})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/90" />
+      <div className="absolute inset-0 bg-[linear-gradient(transparent:50%,rgba(255,255,255,0.03)_50%)] bg-[length:100%_4px] opacity-30" />
 
       <AnimatePresence mode="wait">
         {scene === "start" && (
@@ -198,7 +239,7 @@ export default function App() {
             <motion.button
               onClick={() => setScene("select")}
               whileHover={{ scale: 1.05 }}
-              className="px-12 py-6 bg-green-500 text-black font-bold text-2xl border-2 border-black flex items-center gap-4"
+              className="px-12 py-6 bg-green-500 text-black font-bold text-2xl border-2 border-black flex items-center gap-4 shadow-[6px_6px_0_#000]"
             >
               <Play fill="currentColor" /> START GAME
             </motion.button>
@@ -216,7 +257,7 @@ export default function App() {
             <div className="flex justify-between items-center mb-6 bg-black/60 p-4 rounded-xl border border-white/10 backdrop-blur-xl">
               <button
                 onClick={() => setScene("start")}
-                className="text-slate-400 hover:text-white flex items-center gap-2 font-bold transition-colors"
+                className="text-slate-400 hover:text-white flex items-center gap-2 font-bold"
               >
                 <ArrowLeft size={20} /> BACK
               </button>
@@ -237,7 +278,7 @@ export default function App() {
               <div className="hidden md:flex items-center justify-center">
                 <Swords
                   className={`w-12 h-12 transition-colors ${
-                    isReady
+                    selected.emp.length
                       ? "text-yellow-500 animate-bounce"
                       : "text-slate-700"
                   }`}
@@ -255,9 +296,9 @@ export default function App() {
             </div>
             <div className="mt-8 flex justify-center pb-4">
               <motion.button
-                disabled={!isReady}
+                disabled={selected.emp.length === 0}
                 onClick={() => setScene("battle")}
-                className="px-16 py-5 bg-yellow-500 text-black font-bold text-xl rounded-xl disabled:opacity-50 flex items-center gap-3 shadow-xl transition-all"
+                className="px-16 py-5 bg-yellow-500 text-black font-bold text-xl rounded-xl disabled:opacity-50 flex items-center gap-3 shadow-xl"
               >
                 <Swords size={24} /> ENTER OFFICE
               </motion.button>
@@ -268,8 +309,8 @@ export default function App() {
         {scene === "battle" && (
           <BattleScene
             key="battle"
-            bossSkill={currentBossSkill}
-            empSkill={currentEmpSkill}
+            bossSkill={BOSS_SKILLS.find((s) => s.id === selected.boss[0])}
+            empSkill={ALL_EMP_SKILLS.find((s) => s.id === selected.emp[0])}
             onBack={() => setScene("select")}
           />
         )}
@@ -282,66 +323,76 @@ export default function App() {
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .typing-cursor::after { content: '|'; animation: blink 1s step-end infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .ko-glitch { animation: glitch 0.3s linear infinite; }
+        @keyframes glitch { 0% { opacity: 1; } 50% { opacity: 0.4; transform: scale(1.1); } 100% { opacity: 1; } }
+        .winner-aura { animation: winner-aura-pulse 2s infinite; }
+        @keyframes winner-aura-pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6); } 70% { box-shadow: 0 0 0 30px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
       `}</style>
     </div>
   );
 }
 
-// ================= 3. 战斗场景组件 (已修正布局与字段) =================
+// ================= 3. 战斗场景组件 (已优化 Gamma 6页展示) =================
 function BattleScene({ bossSkill, empSkill, onBack }) {
-  const [turnState, setTurnState] = useState("intro");
+  const [turnState, setTurnState] = useState("loop");
   const [isBossAngry, setIsBossAngry] = useState(false);
-  const [typingText, setTypingText] = useState("");
-  const [isTypingDone, setIsTypingDone] = useState(false);
+  const [castStepIndex, setCastStepIndex] = useState(0);
+  const [isCastingDone, setIsCastingDone] = useState(false);
   const scrollRef = useRef(null);
+
+  const isBossDefeated = turnState === "boss_satisfied";
 
   useEffect(() => {
     if (scrollRef.current)
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  }, [turnState, typingText]);
-
-  useEffect(() => {
-    if (turnState === "intro") setTimeout(() => setTurnState("loop"), 1000);
-  }, [turnState]);
+  }, [turnState, castStepIndex]);
 
   useEffect(() => {
     if (["casting", "player_atk", "boss_satisfied"].includes(turnState)) {
       setIsBossAngry(false);
       return;
     }
+    const initialDelay = setTimeout(() => setIsBossAngry(true), 50);
     const interval = setInterval(() => {
       setIsBossAngry(true);
-      setTimeout(() => setIsBossAngry(false), 1500);
-    }, 4000);
-    return () => clearInterval(interval);
+      setTimeout(() => setIsBossAngry(false), 1200);
+    }, 2500);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(initialDelay);
+    };
   }, [turnState]);
 
   useEffect(() => {
     if (turnState === "casting") {
-      let i = 0;
-      const text = empSkill.magicSpell;
-      setTypingText("");
-      const typeInterval = setInterval(() => {
-        if (i < text.length) {
-          setTypingText((prev) => prev + text.charAt(i));
-          i++;
+      setCastStepIndex(0);
+      setIsCastingDone(false);
+      const totalSteps = empSkill.castSteps.length;
+      let current = 0;
+      const interval = setInterval(() => {
+        if (current < totalSteps - 1) {
+          current++;
+          setCastStepIndex(current);
         } else {
-          clearInterval(typeInterval);
-          setIsTypingDone(true);
+          clearInterval(interval);
+          setIsCastingDone(true);
         }
-      }, 30);
-      return () => clearInterval(typeInterval);
+      }, 900); // 略微放慢步骤时间，让人看清每一页的生成
+      return () => clearInterval(interval);
     }
-  }, [turnState, empSkill.magicSpell]);
+  }, [turnState, empSkill]);
 
   const handleStartCast = () => setTurnState("casting");
 
-  const handleFireSkill = () => {
+  // --- 【优化】：反击延迟改为 800ms ---
+  const handleFire = () => {
     setTurnState("result_display");
     setTimeout(() => {
       setTurnState("player_atk");
-      setTimeout(() => setTurnState("boss_satisfied"), 1500);
-    }, 1500);
+      setTimeout(() => {
+        setTurnState("boss_satisfied");
+      }, 1000); // 用户要求改为 800ms
+    }, 1000);
   };
 
   const handleLearnMore = () =>
@@ -352,17 +403,32 @@ function BattleScene({ bossSkill, empSkill, onBack }) {
       {/* 顶部状态栏 */}
       <div className="w-full max-w-4xl flex items-center justify-between bg-black/60 p-5 rounded-2xl border border-white/10 backdrop-blur-xl shadow-2xl">
         <div className="flex items-center gap-5">
-          <div className="text-5xl drop-shadow-[0_0_10px_rgba(239,68,68,0.4)]">
-            👹
-          </div>
+          <motion.div
+            animate={isBossDefeated ? { y: 5, rotate: 5, opacity: 0.7 } : {}}
+            className="text-5xl"
+          >
+            {isBossDefeated ? "🫠" : "🧐"}
+          </motion.div>
           <div>
-            <div className="text-red-400 font-bold text-lg">细节狂魔 BOSS</div>
-            <div className="w-40 h-2.5 bg-red-900/50 rounded-full mt-2 overflow-hidden border border-red-500/20">
+            <div
+              className={`font-bold text-lg ${
+                isBossDefeated ? "text-slate-500" : "text-red-400"
+              }`}
+            >
+              {bossSkill.nickname}{" "}
+              {isBossDefeated && (
+                <span className="ml-2 text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded ko-glitch uppercase">
+                  Defeated
+                </span>
+              )}
+            </div>
+            <div className="w-40 h-2.5 bg-red-900/40 rounded-full mt-2 overflow-hidden border border-red-500/10">
               <motion.div
                 animate={{
-                  width: turnState === "boss_satisfied" ? "0%" : "100%",
+                  width: isBossDefeated ? "0%" : "100%",
+                  backgroundColor: isBossDefeated ? "#475569" : "#ef4444",
                 }}
-                className="h-full bg-red-500 shadow-[0_0_10px_#ef4444]"
+                className="h-full shadow-[0_0_10px_#ef4444]"
               />
             </div>
           </div>
@@ -372,209 +438,391 @@ function BattleScene({ bossSkill, empSkill, onBack }) {
         </div>
         <div className="flex items-center gap-5 text-right">
           <div>
-            <div className="text-blue-400 font-bold text-lg">摸鱼特工</div>
-            <div className="text-xs text-slate-400 font-mono tracking-widest">
-              SAN: 100%
+            <div
+              className={`font-bold text-lg ${
+                isBossDefeated ? "text-green-400" : "text-blue-400"
+              }`}
+            >
+              {isBossDefeated && (
+                <span className="mr-2 text-[10px] bg-green-600 text-white px-1.5 py-0.5 rounded uppercase animate-bounce inline-block">
+                  Winner
+                </span>
+              )}
+              {empSkill.nickname}
+            </div>
+            <div className="w-40 h-2.5 bg-green-900/50 rounded-full mt-2 overflow-hidden border border-green-500/20 ml-auto">
+              <motion.div
+                initial={{ width: "100%" }}
+                className="h-full bg-green-500 shadow-[0_0_10px_#22c55e]"
+              />
             </div>
           </div>
-          <div className="text-5xl drop-shadow-[0_0_10px_rgba(59,130,246,0.4)]">
-            🧑‍💻
-          </div>
+          <motion.div
+            animate={isBossDefeated ? { scale: [1, 1.15, 1] } : {}}
+            transition={{ repeat: isBossDefeated ? Infinity : 0, duration: 2 }}
+            className={`text-5xl rounded-full flex items-center justify-center ${
+              isBossDefeated ? "winner-aura bg-green-500/30" : ""
+            }`}
+            style={{ width: "60px", height: "60px" }}
+          >
+            {isBossDefeated ? "😎" : "🧑‍💻"}
+          </motion.div>
         </div>
       </div>
 
-      {/* --- 垂直会话区域 (左老板，右员工) --- */}
+      {/* 消息会话区 */}
       <div
         ref={scrollRef}
         className="flex-1 w-full max-w-2xl overflow-y-auto px-4 py-10 space-y-12 no-scrollbar scroll-smooth"
       >
-        {/* 1. 老板找茬 (居左) */}
-        <AnimatePresence>
-          {[
-            "loop",
-            "casting",
-            "result_display",
-            "player_atk",
-            "boss_satisfied",
-          ].includes(turnState) && (
+        {[
+          "loop",
+          "casting",
+          "result_display",
+          "player_atk",
+          "boss_satisfied",
+        ].includes(turnState) && (
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex justify-start"
+          >
+            <div
+              className={`p-6 rounded-3xl rounded-tl-none max-w-sm bg-white text-black shadow-2xl border-4 ${
+                isBossAngry
+                  ? "shake-crazy border-red-500"
+                  : "border-transparent"
+              }`}
+            >
+              <div className="text-[10px] font-black mb-2 text-red-500 border-b pb-2">
+                {bossSkill.nickname}
+              </div>
+              <div className="text-xl font-black leading-snug">
+                “<Typewriter text={bossSkill.attackText} speed={40} />”
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {["result_display", "player_atk", "boss_satisfied"].includes(
+          turnState
+        ) && (
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex justify-end"
+          >
+            <div className="p-6 rounded-3xl rounded-tr-none max-w-sm border-4 border-blue-400 bg-blue-600 text-white shadow-[0_0_40px_rgba(59,130,246,0.5)]">
+              <div className="text-[10px] font-black mb-3 opacity-70 uppercase tracking-widest">
+                {empSkill.nickname}
+              </div>
+              {empSkill.resultType === "text" ? (
+                <div className="text-lg font-bold italic leading-relaxed">
+                  "<Typewriter text={empSkill.resultContent} speed={30} />"
+                </div>
+              ) : (
+                <div className="flex items-center gap-4 bg-white/10 p-4 rounded-xl border border-white/20">
+                  <div className="p-2 bg-white/10 rounded-lg">
+                    <empSkill.icon size={28} />
+                  </div>
+                  <div>
+                    <div className="font-black text-sm">
+                      {empSkill.resultTitle}
+                    </div>
+                    <div className="text-[10px] opacity-60 font-mono mt-0.5">
+                      {empSkill.resultDesc}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+
+        {isBossDefeated && (
+          <>
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               className="flex justify-start"
             >
-              <div
-                className={`p-6 rounded-3xl rounded-tl-none max-w-sm border-4 transition-all duration-300 bg-white text-black shadow-[0_0_30px_rgba(239,68,68,0.3)] ${
-                  isBossAngry
-                    ? "shake-crazy border-red-500"
-                    : "border-transparent"
-                }`}
-              >
-                <div className="flex items-center gap-2 font-bold mb-2 pb-2 border-b border-slate-100 text-red-500 text-[10px] uppercase tracking-widest">
-                  <MessageSquareWarning size={14} /> Boss Incoming
-                </div>
-                <div className="text-xl font-black leading-snug">
-                  “{bossSkill.attackText}”
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* 2. 玩家反击 (居右) */}
-        <AnimatePresence>
-          {["result_display", "player_atk", "boss_satisfied"].includes(
-            turnState
-          ) && (
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex justify-end"
-            >
-              <div className="p-6 rounded-3xl rounded-tr-none max-w-sm border-4 border-blue-400 bg-blue-600 text-white shadow-[0_0_40px_rgba(59,130,246,0.5)]">
-                <div className="flex items-center gap-2 text-[10px] font-black mb-3 opacity-70 uppercase tracking-[0.2em]">
-                  <MessageCircle size={14} /> 打工人
-                </div>
-                {empSkill.resultType === "text" ? (
-                  <div className="text-lg font-bold italic leading-relaxed">
-                    "{empSkill.resultContent}"
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-4 bg-white/10 p-4 rounded-xl border border-white/20">
-                    <div className="p-2 bg-white/10 rounded-lg">
-                      <empSkill.icon size={28} />
-                    </div>
-                    <div>
-                      <div className="font-black text-sm">
-                        {empSkill.resultTitle}
-                      </div>
-                      {/* 已找回 resultDesc */}
-                      {empSkill.resultDesc && (
-                        <div className="text-[10px] opacity-60 font-mono mt-0.5">
-                          {empSkill.resultDesc}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* 3. 老板满意 (居左) */}
-        <AnimatePresence>
-          {turnState === "boss_satisfied" && (
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex justify-start"
-            >
-              <div className="p-6 rounded-3xl rounded-tl-none max-w-sm border-4 border-green-500 bg-green-50 text-green-900 shadow-[0_0_40px_rgba(34,197,94,0.3)]">
-                <div className="flex items-center gap-2 font-bold mb-2 pb-2 border-b border-green-200 text-green-600 text-[10px] uppercase tracking-widest">
-                  <CheckCircle2 size={14} /> Boss Satisfied
+              <div className="p-6 rounded-3xl rounded-tl-none max-w-sm bg-green-50 text-green-900 border-4 border-green-500 shadow-2xl">
+                <div className="text-[10px] font-black mb-2 text-green-600 border-b border-green-200 pb-2">
+                  {bossSkill.nickname} (已安抚)
                 </div>
                 <div className="text-lg font-black leading-snug">
-                  “{bossSkill.satisfiedText}”
+                  “
+                  <Typewriter
+                    text={bossSkill.satisfiedText}
+                    speed={40}
+                    delay={500}
+                  />
+                  ”
                 </div>
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* 4. 系统学习卡片 (居中) */}
-        <AnimatePresence>
-          {turnState === "boss_satisfied" && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.2 }}
               className="flex flex-col items-center gap-6 py-8"
             >
-              <div className="flex items-center gap-2 px-4 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] text-slate-400 font-mono tracking-widest uppercase">
-                <Info size={12} /> System: Mission Accomplished
-              </div>
               <div className="w-full max-w-sm bg-slate-900/90 border border-white/10 p-8 rounded-3xl backdrop-blur-xl shadow-2xl text-center space-y-5">
                 <Trophy
                   size={48}
                   className="mx-auto text-yellow-500 drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]"
                 />
                 <h4 className="text-2xl font-black italic pixel-zh-title">
-                  战斗大胜利!
+                  对线大胜利!
                 </h4>
-                <p className="text-sm text-slate-400 px-4">
-                  刚才化解危机的核心能力是 <b>{empSkill.techTitle}</b>。
+                <p className="text-sm text-slate-400">
+                  化解危机的神器是 <b>{empSkill.brand}</b>。
                 </p>
                 <button
                   onClick={handleLearnMore}
-                  className="w-full bg-green-600 hover:bg-green-500 text-white py-4 rounded-2xl font-black text-base flex items-center justify-center gap-3 transition-all active:scale-95 shadow-lg"
+                  className="w-full bg-green-600 text-white py-4 rounded-2xl font-black text-base flex items-center justify-center gap-3 active:scale-95 shadow-lg"
                 >
-                  🚀 去学习该 AI 技能 <ExternalLink size={18} />
+                  🚀 去学习 {empSkill.brand} <ExternalLink size={18} />
                 </button>
                 <button
                   onClick={onBack}
                   className="w-full text-slate-500 hover:text-white text-xs font-bold underline transition-colors"
                 >
-                  返回首页，挑战下一关
+                  挑战下一关
                 </button>
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
+          </>
+        )}
       </div>
 
       {/* 底部按钮 */}
-      <div className="w-full max-w-4xl h-36 bg-slate-900/90 rounded-3xl border-4 border-slate-700 backdrop-blur-xl flex items-center justify-center p-6 shadow-2xl">
-        <motion.button
+      <div className="w-full max-w-4xl h-32 bg-slate-900/90 rounded-3xl border-4 border-slate-700 backdrop-blur-xl flex items-center justify-center p-6 shadow-2xl">
+        <button
           onClick={handleStartCast}
           disabled={turnState !== "loop"}
-          className={`px-16 py-5 rounded-2xl font-black text-2xl flex items-center gap-5 border-b-8 transition-all active:translate-y-2 active:border-b-0
-            ${
-              turnState === "loop"
-                ? "bg-blue-600 border-blue-800 text-white shadow-[0_10px_20px_rgba(59,130,246,0.3)]"
-                : "bg-slate-800 border-slate-950 text-slate-600 grayscale cursor-not-allowed"
-            }
-          `}
+          className={`px-16 py-4 rounded-2xl font-black text-2xl flex items-center gap-5 border-b-8 transition-all active:translate-y-2 active:border-b-0 ${
+            turnState === "loop"
+              ? "bg-blue-600 border-blue-800 text-white"
+              : "bg-slate-800 border-slate-950 text-slate-600 opacity-40 cursor-not-allowed"
+          }`}
         >
           <empSkill.icon size={28} /> {empSkill.name.split("·")[1]}
-        </motion.button>
+        </button>
       </div>
 
-      {/* 演示窗口 */}
+      {/* 品牌拟态演示窗 */}
       <AnimatePresence>
         {turnState === "casting" && (
-          <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-md px-6">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md px-6">
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              className="w-full max-w-xl bg-slate-900 border-2 border-slate-700 rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden font-mono"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="w-full max-w-2xl rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden border-4"
+              style={{ borderColor: empSkill.brandColor }}
             >
-              <div className="bg-slate-800 px-5 py-3 flex items-center justify-between border-b border-slate-700">
-                <div className="flex gap-2">
-                  <div className="w-3.5 h-3.5 rounded-full bg-red-500 shadow-inner" />
-                  <div className="w-3.5 h-3.5 rounded-full bg-yellow-500 shadow-inner" />
-                  <div className="w-3.5 h-3.5 rounded-full bg-green-500 shadow-inner" />
+              {/* 顶部工具栏 */}
+              <div
+                className="px-6 py-4 flex items-center justify-between border-b"
+                style={{
+                  backgroundColor: empSkill.brandColor + "20",
+                  borderColor: empSkill.brandColor + "40",
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-white/10">
+                    <empSkill.brandIcon
+                      size={20}
+                      style={{ color: empSkill.brandColor }}
+                    />
+                  </div>
+                  <span className="font-black tracking-tighter text-lg">
+                    {empSkill.brand} AI Engine
+                  </span>
                 </div>
-                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                  {empSkill.techTitle} Core Engine
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/50" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/50" />
                 </div>
               </div>
-              <div className="p-8">
-                <div className="text-[10px] text-yellow-500 mb-4 font-black uppercase opacity-70 tracking-widest">
-                  Executing Prompt...
-                </div>
-                <div className="text-xl text-green-400 min-h-[100px] font-bold leading-relaxed typing-cursor">
-                  {typingText}
-                </div>
-                {isTypingDone && (
-                  <motion.button
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    onClick={handleFireSkill}
-                    className="mt-8 w-full py-5 bg-green-600 text-white font-black text-lg rounded-2xl flex items-center justify-center gap-3 hover:bg-green-500 active:scale-95 transition-all shadow-lg"
+
+              {/* 操作区 */}
+              <div className="bg-slate-950 p-6 md:p-8 min-h-[420px] flex flex-col relative">
+                <div className="flex items-center justify-between mb-6">
+                  <div
+                    className="text-[10px] uppercase font-black tracking-[0.2em]"
+                    style={{ color: empSkill.brandColor }}
                   >
-                    <Send size={22} /> {empSkill.actionBtn}
-                  </motion.button>
-                )}
+                    Process: {empSkill.techTitle}
+                  </div>
+                  <div className="text-[10px] font-mono text-slate-500">
+                    {castStepIndex + 1} / {empSkill.castSteps.length}
+                  </div>
+                </div>
+
+                <div className="flex-1 flex items-center justify-center overflow-hidden mb-6">
+                  {/* --- Gamma 专属：确保展示 6 页内容 --- */}
+                  {empSkill.brand === "Gamma" && (
+                    <div className="grid grid-cols-3 grid-rows-2 gap-3 w-full">
+                      {[0, 1, 2, 3, 4, 5].map((idx) => (
+                        <motion.div
+                          key={idx}
+                          animate={{
+                            opacity: castStepIndex >= idx + 1 ? 1 : 0.15, // 修改点：根据步骤精确控制
+                            scale: castStepIndex === idx + 1 ? 1.05 : 1,
+                            borderColor:
+                              castStepIndex === idx + 1
+                                ? empSkill.brandColor
+                                : "rgba(255,255,255,0.1)",
+                          }}
+                          className="aspect-[4/3] bg-white/5 border rounded-lg overflow-hidden relative p-2"
+                        >
+                          <div className="h-1 w-3/4 bg-white/20 rounded mb-1" />
+                          <div className="h-0.5 w-full bg-white/10 rounded" />
+                          <div className="mt-2 flex items-center justify-center">
+                            {castStepIndex > idx + 1 ? (
+                              <Check size={12} className="text-green-500" />
+                            ) : castStepIndex === idx + 1 ? (
+                              <Loader2
+                                size={12}
+                                className="animate-spin text-white/50"
+                              />
+                            ) : null}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+
+                  {empSkill.brand === "Napkin" && (
+                    <div className="relative h-32 w-full flex items-center justify-center">
+                      <svg
+                        width="240"
+                        height="120"
+                        viewBox="0 0 240 120"
+                        className="overflow-visible"
+                      >
+                        <motion.circle
+                          cx="120"
+                          cy="20"
+                          r="10"
+                          stroke={empSkill.brandColor}
+                          strokeWidth="2"
+                          fill="none"
+                          animate={{ opacity: castStepIndex >= 1 ? 1 : 0 }}
+                        />
+                        <motion.circle
+                          cx="50"
+                          cy="60"
+                          r="10"
+                          stroke={empSkill.brandColor}
+                          strokeWidth="2"
+                          fill="none"
+                          animate={{ opacity: castStepIndex >= 2 ? 1 : 0 }}
+                        />
+                        <motion.circle
+                          cx="190"
+                          cy="60"
+                          r="10"
+                          stroke={empSkill.brandColor}
+                          strokeWidth="2"
+                          fill="none"
+                          animate={{ opacity: castStepIndex >= 2 ? 1 : 0 }}
+                        />
+                        <motion.circle
+                          cx="120"
+                          cy="100"
+                          r="10"
+                          stroke={empSkill.brandColor}
+                          strokeWidth="2"
+                          fill="none"
+                          animate={{ opacity: castStepIndex >= 3 ? 1 : 0 }}
+                        />
+                        {castStepIndex >= 2 && (
+                          <motion.path
+                            d="M 110 30 L 60 50"
+                            stroke={empSkill.brandColor}
+                            fill="none"
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: 1 }}
+                          />
+                        )}
+                        {castStepIndex >= 2 && (
+                          <motion.path
+                            d="M 130 30 L 180 50"
+                            stroke={empSkill.brandColor}
+                            fill="none"
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: 1 }}
+                          />
+                        )}
+                        {castStepIndex >= 3 && (
+                          <motion.path
+                            d="M 60 70 L 110 90"
+                            stroke={empSkill.brandColor}
+                            fill="none"
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: 1 }}
+                          />
+                        )}
+                      </svg>
+                    </div>
+                  )}
+
+                  {(empSkill.brand === "DeepSeek" ||
+                    empSkill.brand === "Kimi") && (
+                    <div className="space-y-4 w-full">
+                      <div className="flex justify-end">
+                        <div className="bg-slate-800 px-4 py-2 rounded-2xl rounded-tr-none text-xs text-slate-400 italic">
+                          Thinking...
+                        </div>
+                      </div>
+                      <div
+                        className="bg-white/5 border border-white/10 px-5 py-4 rounded-2xl text-base font-medium leading-relaxed"
+                        style={{ color: empSkill.brandColor }}
+                      >
+                        {empSkill.castSteps[castStepIndex]}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-4 border-t border-white/5 flex flex-col items-center gap-4">
+                  {!isCastingDone ? (
+                    <div className="w-full text-center">
+                      <div className="text-lg font-black text-white italic tracking-tight mb-4">
+                        {empSkill.castSteps[castStepIndex]}
+                      </div>
+                      <div className="flex justify-center gap-1.5">
+                        {empSkill.castSteps.map((_, i) => (
+                          <div
+                            key={i}
+                            className={`h-1 rounded-full transition-all duration-500 ${
+                              castStepIndex >= i ? "w-8" : "w-2 bg-white/10"
+                            }`}
+                            style={{
+                              backgroundColor:
+                                castStepIndex >= i
+                                  ? empSkill.brandColor
+                                  : undefined,
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <motion.button
+                      initial={{ scale: 0.9, opacity: 0, y: 10 }}
+                      animate={{ scale: 1, opacity: 1, y: 0 }}
+                      onClick={handleFire}
+                      className="w-full py-5 rounded-2xl font-black text-xl flex items-center justify-center gap-3 shadow-2xl"
+                      style={{ backgroundColor: empSkill.brandColor }}
+                    >
+                      <Send size={24} /> {empSkill.actionBtn}
+                    </motion.button>
+                  )}
+                </div>
               </div>
             </motion.div>
           </div>
@@ -584,7 +832,7 @@ function BattleScene({ bossSkill, empSkill, onBack }) {
   );
 }
 
-// ================= 4. 选择卡片组件 (已修正 BOSS 描述渲染) =================
+// ================= 选择卡片组件 =================
 function SelectCard({
   role,
   title,
@@ -596,36 +844,28 @@ function SelectCard({
 }) {
   const c =
     theme === "red"
-      ? {
-          bg: "from-red-950/40",
-          border: "border-red-500/30",
-          active:
-            "border-red-500 bg-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.2)]",
-        }
-      : {
-          bg: "from-blue-950/40",
-          border: "border-blue-500/30",
-          active:
-            "border-blue-500 bg-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)]",
-        };
+      ? "border-red-500/30 bg-red-500/10"
+      : "border-blue-500/30 bg-blue-500/10";
+  const active =
+    theme === "red"
+      ? "border-red-500 bg-red-500/30 shadow-[0_0_20px_rgba(239,68,68,0.2)]"
+      : "border-blue-500 bg-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.2)]";
 
   return (
     <div
-      className={`flex-1 bg-gradient-to-br ${c.bg} to-slate-950 border-2 ${c.border} rounded-3xl p-6 flex flex-col gap-5 backdrop-blur-sm overflow-hidden`}
+      className={`flex-1 border-2 ${c} rounded-[32px] p-6 flex flex-col gap-5 backdrop-blur-sm overflow-hidden shadow-2xl`}
     >
       <h3
-        className={`text-4xl font-black text-center mb-2 ${
+        className={`text-4xl font-black text-center ${
           theme === "red" ? "text-red-400" : "text-blue-400"
         }`}
       >
         {title}
       </h3>
       {isLocked ? (
-        <div className="flex-1 flex flex-col items-center justify-center opacity-20 grayscale scale-110">
-          <Lock size={64} />
-          <p className="mt-6 text-lg font-black tracking-widest text-white uppercase">
-            Locked
-          </p>
+        <div className="flex-1 flex flex-col items-center justify-center opacity-20 grayscale">
+          <Lock size={48} />
+          <p className="mt-4 font-black">LOCKED</p>
         </div>
       ) : (
         <div className="flex-1 space-y-4 overflow-y-auto pr-2 no-scrollbar">
@@ -633,13 +873,11 @@ function SelectCard({
             <div
               key={s.id}
               onClick={() => onToggle(role, s.id)}
-              className={`p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-5
-                ${
-                  selectedIds.includes(s.id)
-                    ? c.active
-                    : "border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/20"
-                }
-              `}
+              className={`p-5 rounded-2xl border-2 transition-all cursor-pointer flex items-center gap-5 ${
+                selectedIds.includes(s.id)
+                  ? active
+                  : "border-white/5 bg-white/5 hover:bg-white/10"
+              }`}
             >
               <div
                 className={`p-3 rounded-xl ${
@@ -648,13 +886,10 @@ function SelectCard({
               >
                 <s.icon size={28} />
               </div>
-              <div className="flex-1">
-                <div className="font-black text-lg">{s.name}</div>
-                {/* 渲染 desc 字段 */}
+              <div className="flex-1 text-left">
+                <div className="font-black text-lg leading-tight">{s.name}</div>
                 {s.desc && (
-                  <div className="text-xs opacity-50 leading-snug mt-1 font-medium italic">
-                    {s.desc}
-                  </div>
+                  <div className="text-[10px] opacity-50 italic">{s.desc}</div>
                 )}
               </div>
               {selectedIds.includes(s.id) && (
