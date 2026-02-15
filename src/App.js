@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 
 // --- 常量数据 ---
-const OFFICE_BG_URL = "https://youke.xn--y7xa690gmna.cn/s1/2026/02/15/69913188a0f1e.webp";
+const OFFICE_BG_URL = "https://img.bytelife.ai/officevalley/background.jpg";
 
 // --- 1. 数据定义 ---
 const BOSS_SKILLS = [
